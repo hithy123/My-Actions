@@ -6,6 +6,7 @@ import time
 import os
 
 msg = ""
+day = ""
 
 serverJ = os.environ['push_key']
 # 尝试登陆
@@ -43,12 +44,16 @@ time.sleep(2)
 print("哔哩哔哩漫画获取签到信息 start>>>")
 msg = msg + "哔哩哔哩漫画获取签到信息: \n"
 r = requests.post("https://manga.bilibili.com/twirp/activity.v1.Activity/GetClockInInfo", verify=False, headers=headers_with_cookie)
-
-print("累计签到" + str(r.json()['data']['day_count']) + "天🐶")
-msg = msg + "累计签到" + str(r.json()['data']['day_count']) + "天🐶\n"
+day = str(r.json()['data']['day_count'])
+if day == "0":
+    print("登录失败,未登录🐶")
+    msg = "登录失败,未登录🐶"
+print("累计签到" + day + "天🐶")
+msg = msg + "累计签到" + day + "天🐶\n"
 
 time.sleep(3)
 
+# 如果不使用银瓜子兑换硬币 请注释掉下面两行即可。
 print("哔哩哔哩银瓜子兑换硬币 start>>>")
 print(b.silver_to_coin())
 
